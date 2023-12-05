@@ -43,6 +43,7 @@ class DashboardProvider with ChangeNotifier {
       updateTime: responseData['updateTime'],
       updateInterval: responseData['updateInterval'],
       flowControlStatus: responseData['flowControlStatus'],
+      userId: responseData['userID'],
     );
     notifyListeners();
   }
