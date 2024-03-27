@@ -13,6 +13,10 @@ class DashboardProvider with ChangeNotifier {
   }
 
   SettingsData get settingsData {
+    // ignore: unnecessary_null_comparison
+    if (_settingsData == null) {
+      fetchSettingsData();
+    }
     return _settingsData;
   }
 

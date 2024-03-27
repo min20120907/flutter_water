@@ -94,14 +94,14 @@ class SettingsView extends StatelessWidget {
         Provider.of<SettingsProvider>(context, listen: false);
         
     // Initialize the controller with the current settings
-    SettingsData settingsData = SettingsData(
+    SettingsData settingsData = Provider.of<DashboardProvider>(context, listen: false).settingsData ?? SettingsData(
       userId: 'abc123',
       unitSettings: 'Celcius',
       updateTime: '26-03-2024',
       updateInterval: '1',
       flowControlStatus: 0,
     );
-    // settingsData = Provider.of<DashboardProvider>(context, listen: false).settingsData;
+    
     TextEditingController userIdController =
         TextEditingController(text: settingsData.userId);
     TextEditingController unitSettingsController =
@@ -147,6 +147,7 @@ class SettingsView extends StatelessWidget {
               labelText: 'Flow Control Status',
             ),
           ),
+        
           ElevatedButton(
             child: const Text('Update Settings'),
             onPressed: () {
@@ -165,6 +166,7 @@ class SettingsView extends StatelessWidget {
               );
             },
           ),
+          // Back to dashboard button
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
           }, child: const Text('Back to Dashboard'))
