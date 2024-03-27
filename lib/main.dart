@@ -90,19 +90,18 @@ class Dashboard extends StatelessWidget {
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //SettingsProvider settingsProvider =
-    //    Provider.of<SettingsProvider>(context, listen: false);
-    //
-    //SettingsData settingsData =
-    //    Provider.of<DashboardProvider>(context, listen: false).settingsData;
+    SettingsProvider settingsProvider =
+        Provider.of<SettingsProvider>(context, listen: false);
+        
     // Initialize the controller with the current settings
-    final settingsData = SettingsData(
+    SettingsData settingsData = SettingsData(
       userId: 'abc123',
       unitSettings: 'Celcius',
       updateTime: '26-03-2024',
       updateInterval: '1',
       flowControlStatus: 0,
     );
+    // settingsData = Provider.of<DashboardProvider>(context, listen: false).settingsData;
     TextEditingController userIdController =
         TextEditingController(text: settingsData.userId);
     TextEditingController unitSettingsController =
@@ -151,13 +150,13 @@ class SettingsView extends StatelessWidget {
           ElevatedButton(
             child: const Text('Update Settings'),
             onPressed: () {
-              // settingsProvider.updateSettings(
-              //   userIdController.text,
-              //   unitSettingsController.text,
-              //   updateTimeController.text,
-              //   updateIntervalController.text,
-              //   int.parse(flowControlStatusController.text),
-              // );
+              settingsProvider.updateSettings(
+                userIdController.text,
+                unitSettingsController.text,
+                updateTimeController.text,
+                updateIntervalController.text,
+                int.parse(flowControlStatusController.text),
+              );
               // show text that the settings have been updated
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -166,6 +165,9 @@ class SettingsView extends StatelessWidget {
               );
             },
           ),
+          ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          }, child: const Text('Back to Dashboard'))
         ],
       ),
     ));
