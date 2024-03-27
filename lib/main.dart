@@ -70,14 +70,45 @@ class Dashboard extends StatelessWidget {
             }
             return ListView.builder(
               itemCount: dashboardData.length,
-              itemBuilder: (ctx, i) => Card(
-                child: ListTile(
-                  leading: Text(
-                      'Water Flow Speed: ${dashboardData[i].waterFlowSpeed}'),
-                  title: Text('Air Pressure: ${dashboardData[i].airPressure}'),
-                  subtitle: Text(
-                      'Feel-like Temperature: ${dashboardData[i].feelLikeTemperature}'),
-                ),
+              itemBuilder: (ctx, i) => Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Water Flow Speed',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].waterFlowSpeed}'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Air Pressure',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].airPressure}'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Feel-like Temperature',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].feelLikeTemperature}'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           }
