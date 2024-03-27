@@ -6,7 +6,13 @@ import 'package:flutter_water/models/settings_data.dart';
 
 class DashboardProvider with ChangeNotifier {
   List<DashboardData> _dashboardData = [];
-  late SettingsData _settingsData;
+  late SettingsData _settingsData = SettingsData(
+    userId: 'abc123',
+    unitSettings: 'Celcius',
+    updateTime: '26-03-2024',
+    updateInterval: '1',
+    flowControlStatus: 0,
+  );
 
   List<DashboardData> get dashboardData {
     return [..._dashboardData];
