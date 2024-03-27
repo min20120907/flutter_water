@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_water/models/settings_data.dart';
 import 'package:flutter_water/models/settings_provider.dart';
 import 'package:flutter_water/providers/dashboard_provider.dart';
@@ -20,12 +21,12 @@ class DashboardApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Damsel Fly',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Dashboard(title: 'Flutter Demo Home Page'),
+      home: const Dashboard(title: 'Sea Cycle Valve Dashboard'),
     );
   }
 }
@@ -36,8 +37,6 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardData =
-        Provider.of<DashboardProvider>(context, listen: false).dashboardData;
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -55,12 +54,20 @@ class Dashboard extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        future: Provider.of<DashboardProvider>(context, listen: false)
+        future: Provider.of<DashboardProvider>(context, listen: true)
             .fetchDashboardData(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // Handle error
+            return Text('Error: ${snapshot.error}'); // Display the error code
           } else {
+            final dashboardData = snapshot.data;
+            // initialize dashboardData with default value
+            if (dashboardData == null) {
+              return const Center(child: Text('No data'));
+            }
             return ListView.builder(
               itemCount: dashboardData.length,
               itemBuilder: (ctx, i) => Card(
@@ -83,23 +90,32 @@ class Dashboard extends StatelessWidget {
 class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final settingsProvider =
-        Provider.of<SettingsProvider>(context, listen: false);
-
-    final settingsData =
-        Provider.of<DashboardProvider>(context, listen: false).settingsData;
-
-    final userIdController = TextEditingController(text: settingsData.userId);
-    final unitSettingsController =
+    //SettingsProvider settingsProvider =
+    //    Provider.of<SettingsProvider>(context, listen: false);
+    //
+    //SettingsData settingsData =
+    //    Provider.of<DashboardProvider>(context, listen: false).settingsData;
+    // Initialize the controller with the current settings
+    final settingsData = SettingsData(
+      userId: 'abc123',
+      unitSettings: 'Celcius',
+      updateTime: '26-03-2024',
+      updateInterval: '1',
+      flowControlStatus: 0,
+    );
+    TextEditingController userIdController =
+        TextEditingController(text: settingsData.userId);
+    TextEditingController unitSettingsController =
         TextEditingController(text: settingsData.unitSettings);
-    final updateTimeController =
+    TextEditingController updateTimeController =
         TextEditingController(text: settingsData.updateTime);
-    final updateIntervalController =
+    TextEditingController updateIntervalController =
         TextEditingController(text: settingsData.updateInterval);
-    final flowControlStatusController =
+    TextEditingController flowControlStatusController =
         TextEditingController(text: settingsData.flowControlStatus.toString());
 
-    return Form(
+    return Scaffold(
+        body: Form(
       child: Column(
         children: [
           TextFormField(
@@ -135,17 +151,23 @@ class SettingsView extends StatelessWidget {
           ElevatedButton(
             child: const Text('Update Settings'),
             onPressed: () {
-              settingsProvider.updateSettings(
-                userIdController.text,
-                unitSettingsController.text,
-                updateTimeController.text,
-                updateIntervalController.text,
-                int.parse(flowControlStatusController.text),
+              // settingsProvider.updateSettings(
+              //   userIdController.text,
+              //   unitSettingsController.text,
+              //   updateTimeController.text,
+              //   updateIntervalController.text,
+              //   int.parse(flowControlStatusController.text),
+              // );
+              // show text that the settings have been updated
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Settings have been updated'),
+                ),
               );
             },
           ),
         ],
       ),
-    );
+    ));
   }
 }

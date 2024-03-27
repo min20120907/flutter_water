@@ -16,9 +16,25 @@ class DashboardProvider with ChangeNotifier {
     return _settingsData;
   }
 
-  Future<void> fetchDashboardData() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:5000/dashboard'));
+  Future<List<DashboardData>> fetchDashboardData() async {
+    // final response =
+    //    await http.get(Uri.parse('http://localhost:5000/dashboard'));
+    // use fake response to test the UI
+    final response = http.Response(
+        '[{"waterFlowSpeed": 0.0, "airPressure": 0.0, "feelLikeTemperature": 0.0, "realTemperature": 0.0, "humidity": 0.0, "waterLevel": 0.0, "totalWater": 0.0, "time": "00:00:00"}]',
+        200);
+    // Initialize the default value of the dashboard data
+    _dashboardData = [
+      DashboardData(
+          waterFlowSpeed: 0,
+          airPressure: 0,
+          feelLikeTemperature: 0,
+          realTemperature: 0,
+          humidity: 0,
+          waterLevel: 0,
+          totalWater: 0,
+          time: '00:00:00')
+    ];
     final responseData = json.decode(response.body);
     _dashboardData = (responseData as List)
         .map((item) => DashboardData(
@@ -32,11 +48,16 @@ class DashboardProvider with ChangeNotifier {
             time: item['time']))
         .toList();
     notifyListeners();
+    return _dashboardData;
   }
 
   Future<void> fetchSettingsData() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:5000/settings'));
+    // final response =
+    //     await http.get(Uri.parse('http://localhost:5000/settings'));
+    // use fake response to test the UI
+    final response = http.Response(
+        '[{"waterFlowSpeed": 0.0, "airPressure": 0.0, "feelLikeTemperature": 0.0, "realTemperature": 0.0, "humidity": 0.0, "waterLevel": 0.0, "totalWater": 0.0, "time": "00:00:00"}]',
+        200);
     final responseData = json.decode(response.body);
     _settingsData = SettingsData(
       unitSettings: responseData['unitSettings'],
