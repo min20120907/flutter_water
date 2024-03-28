@@ -117,8 +117,9 @@ class Dashboard extends StatelessWidget {
     );
   }
 }
-
 class SettingsView extends StatelessWidget {
+  const SettingsView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SettingsProvider settingsProvider =
@@ -143,66 +144,84 @@ class SettingsView extends StatelessWidget {
         TextEditingController(text: settingsData.flowControlStatus.toString());
 
     return Scaffold(
-        body: Form(
-      child: Column(
-        children: [
-          TextFormField(
-            controller: userIdController,
-            decoration: const InputDecoration(
-              labelText: 'User ID',
-            ),
-          ),
-          TextFormField(
-            controller: unitSettingsController,
-            decoration: const InputDecoration(
-              labelText: 'Unit Settings',
-            ),
-          ),
-          TextFormField(
-            controller: updateTimeController,
-            decoration: const InputDecoration(
-              labelText: 'Update Time',
-            ),
-          ),
-          TextFormField(
-            controller: updateIntervalController,
-            decoration: const InputDecoration(
-              labelText: 'Update Interval',
-            ),
-          ),
-          TextFormField(
-            controller: flowControlStatusController,
-            decoration: const InputDecoration(
-              labelText: 'Flow Control Status',
-            ),
-          ),
-
-          ElevatedButton(
-            child: const Text('Update Settings'),
-            onPressed: () {
-              settingsProvider.updateSettings(
-                userIdController.text,
-                unitSettingsController.text,
-                updateTimeController.text,
-                updateIntervalController.text,
-                int.parse(flowControlStatusController.text),
-              );
-              // show text that the settings have been updated
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Settings have been updated'),
-                ),
-              );
-            },
-          ),
-          // Back to dashboard button
-          ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Back to Dashboard'))
-        ],
+      appBar: AppBar(
+        title: const Text('Settings'),
+        backgroundColor: Colors.blue,
       ),
-    ));
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: userIdController,
+                  decoration: const InputDecoration(
+                    labelText: 'User ID',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: unitSettingsController,
+                  decoration: const InputDecoration(
+                    labelText: 'Unit Settings',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.settings),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: updateTimeController,
+                  decoration: const InputDecoration(
+                    labelText: 'Update Time',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.timer),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: updateIntervalController,
+                  decoration: const InputDecoration(
+                    labelText: 'Update Interval',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.update),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: flowControlStatusController,
+                  decoration: const InputDecoration(
+                    labelText: 'Flow Control Status',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.show_chart),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  child: const Text('Update Settings'),
+                  onPressed: () {
+                    settingsProvider.updateSettings(
+                      userIdController.text,
+                      unitSettingsController.text,
+                      updateTimeController.text,
+                      updateIntervalController.text,
+                      int.parse(flowControlStatusController.text),
+                    );
+                    // show text that the settings have been updated
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Settings have been updated'),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
