@@ -108,6 +108,78 @@ class Dashboard extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Real Temperature',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].realTemperature}'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Humidity',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].humidity}'),
+                      ),
+                    ),
+                  ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Air Pressure',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].airPressure}'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Water Level',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].waterLevel}'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Total Water',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text('${dashboardData[i].totalWater}'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Text(
+                          'Time',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        title: Text(dashboardData[i].time),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );
