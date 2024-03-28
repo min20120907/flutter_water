@@ -38,157 +38,197 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsView()),
+        appBar: AppBar(
+          title: Text(title),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.settings),
+              tooltip: 'Settings',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsView()),
+                );
+              },
+            ),
+          ],
+        ),
+        body: FutureBuilder(
+          future: Provider.of<DashboardProvider>(context, listen: true)
+              .fetchDashboardData(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              // Handle error
+              return Text('Error: ${snapshot.error}'); // Display the error code
+            } else {
+              final dashboardData = snapshot.data;
+              // initialize dashboardData with default value
+              if (dashboardData == null) {
+                return const Center(child: Text('No data'));
+              }
+              return ListView.builder(
+                itemCount: dashboardData.length,
+                itemBuilder: (ctx, i) => Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Water Flow Speed',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].waterFlowSpeed}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Air Pressure',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].airPressure}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Feel-like Temperature',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title:
+                              Text('${dashboardData[i].feelLikeTemperature}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Real Temperature',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].realTemperature}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Humidity',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].humidity}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Air Pressure',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].airPressure}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Water Level',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].waterLevel}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Total Water',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text('${dashboardData[i].totalWater}'),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Card(
+                        child: ListTile(
+                          leading: const Text(
+                            'Time',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          title: Text(dashboardData[i].time),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
-            },
-          ),
-        ],
-      ),
-      body: FutureBuilder(
-        future: Provider.of<DashboardProvider>(context, listen: true)
-            .fetchDashboardData(),
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            // Handle error
-            return Text('Error: ${snapshot.error}'); // Display the error code
-          } else {
-            final dashboardData = snapshot.data;
-            // initialize dashboardData with default value
-            if (dashboardData == null) {
-              return const Center(child: Text('No data'));
             }
-            return ListView.builder(
-              itemCount: dashboardData.length,
-              itemBuilder: (ctx, i) => Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Water Flow Speed',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].waterFlowSpeed}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Air Pressure',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].airPressure}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Feel-like Temperature',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].feelLikeTemperature}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Real Temperature',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].realTemperature}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Humidity',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].humidity}'),
-                      ),
-                    ),
-                  ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Air Pressure',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].airPressure}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Water Level',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].waterLevel}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Total Water',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text('${dashboardData[i].totalWater}'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Text(
-                          'Time',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        title: Text(dashboardData[i].time),
-                      ),
-                    ),
-                  ),
-                ],
+          },
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
-            );
-          }
-        },
-      ),
-    );
+              BottomNavigationBarItem(
+                icon: Icon(Icons.dashboard),
+                label: 'Dashboard',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Notifications',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
+            // 選擇的項目索引
+            currentIndex: 1,
+            // 點擊項目時的回調
+            onTap: (index) {
+              // 根據索引執行相應的操作，例如導航到不同的頁面
+              switch (index) {
+                case 0:
+                  // 導航到Home頁面
+                  break;
+                case 1:
+                  // 導航到Dashboard頁面
+                  break;
+                case 2:
+                  // 導航到Notifications頁面
+                  break;
+                case 3:
+                  // 導航到Settings頁面
+                  break;
+              }
+            }));
   }
 }
+
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
