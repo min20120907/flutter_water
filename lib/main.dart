@@ -165,93 +165,6 @@ FutureBuilder dashboard(BuildContext context) {
       });
 }
 
-FutureBuilder settings(BuildContext context) {
-  return FutureBuilder(
-      future: Provider.of<DashboardProvider>(context, listen: true)
-          .fetchSettingsData(),
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          // Handle error
-          return Text('Error: ${snapshot.error}'); // Display the error code
-        } else {
-          final settingsData = snapshot.data;
-          // initialize settingsData with default value
-          if (settingsData == null) {
-            return const Center(child: Text('No data'));
-          }
-          return ListView.builder(
-            itemCount: settingsData.length,
-            itemBuilder: (ctx, i) => Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'User ID',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${settingsData[i].userId}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Unit Settings',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${settingsData[i].unitSettings}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Update Time',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${settingsData[i].updateTime}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Update Interval',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${settingsData[i].updateInterval}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Flow Control Status',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${settingsData[i].flowControlStatus}'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-      });
-}
-
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
   @override
@@ -349,90 +262,126 @@ class SettingsView extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('SCV mobile'),
+          title: const Text('SCV mobile'),
+          automaticallyImplyLeading: false, // Remove back button
         ),
-        body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.purple, Colors.cyan],
-              ),
-            ),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: userIdController,
-                        decoration: const InputDecoration(
-                          labelText: 'User ID',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.person),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: unitSettingsController,
-                        decoration: const InputDecoration(
-                          labelText: 'Unit Settings',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.settings),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: updateTimeController,
-                        decoration: const InputDecoration(
-                          labelText: 'Update Time',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.timer),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: updateIntervalController,
-                        decoration: const InputDecoration(
-                          labelText: 'Update Interval',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.update),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: flowControlStatusController,
-                        decoration: const InputDecoration(
-                          labelText: 'Flow Control Status',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.show_chart),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        child: const Text('Update Settings'),
-                        onPressed: () {
-                          settingsProvider.updateSettings(
-                            userIdController.text,
-                            unitSettingsController.text,
-                            updateTimeController.text,
-                            updateIntervalController.text,
-                            int.parse(flowControlStatusController.text),
-                          );
-                          // show text that the settings have been updated
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Settings have been updated'),
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.purple, Colors.cyan],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                                8.0), // Adjust the padding here
+                            child: TextFormField(
+                              controller: userIdController,
+                              decoration: const InputDecoration(
+                                labelText: 'User ID',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.person),
+                              ),
                             ),
-                          );
-                        },
-                      )
-                    ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                                8.0), // Adjust the padding here
+                            child: TextFormField(
+                              controller: unitSettingsController,
+                              decoration: const InputDecoration(
+                                labelText: 'Unit Settings',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.settings),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                                8.0), // Adjust the padding here
+                            child: TextFormField(
+                              controller: updateTimeController,
+                              decoration: const InputDecoration(
+                                labelText: 'Update Time',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.timer),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                                8.0), // Adjust the padding here
+                            child: TextFormField(
+                              controller: updateIntervalController,
+                              decoration: const InputDecoration(
+                                labelText: 'Update Interval',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.update),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                                8.0), // Adjust the padding here
+                            child: TextFormField(
+                              controller: flowControlStatusController,
+                              decoration: const InputDecoration(
+                                labelText: 'Flow Control Status',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.show_chart),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          child: const Text('Update Settings'),
+                          onPressed: () {
+                            settingsProvider.updateSettings(
+                              userIdController.text,
+                              unitSettingsController.text,
+                              updateTimeController.text,
+                              updateIntervalController.text,
+                              int.parse(flowControlStatusController.text),
+                            );
+                            // show text that the settings have been updated
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Settings have been updated'),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            )),
+            ),
+          ],
+        ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
