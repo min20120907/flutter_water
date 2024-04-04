@@ -48,118 +48,178 @@ FutureBuilder dashboard(BuildContext context) {
           }
           return ListView.builder(
             itemCount: dashboardData.length,
-            itemBuilder: (ctx, i) => Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Water Flow Speed',
-                        style: TextStyle(fontSize: 18),
+            itemBuilder: (ctx, i) => Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '${dashboardData[i].realTemperature}',
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              const Text(
+                                'Real Temperature',
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign
+                                    .center, // This will center align the text
+                                maxLines:
+                                    2, // This will limit the text to two lines
+                                overflow: TextOverflow
+                                    .ellipsis, // This will add ellipsis if the text overflows
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      title: Text('${dashboardData[i].waterFlowSpeed}'),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Air Pressure',
-                        style: TextStyle(fontSize: 18),
+                  Expanded(
+                    flex: 1,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '${dashboardData[i].waterFlowSpeed}',
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              const Text(
+                                'Water Flow Speed',
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign
+                                    .center, // This will center align the text
+                                maxLines:
+                                    2, // This will limit the text to two lines
+                                overflow: TextOverflow
+                                    .ellipsis, // This will add ellipsis if the text overflows
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      title: Text('${dashboardData[i].airPressure}'),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Feel-like Temperature',
-                        style: TextStyle(fontSize: 18),
+                  // 你可以按照上面的模式添加更多的卡片
+                  Expanded(
+                    flex: 1,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '${dashboardData[i].airPressure}',
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              const Text(
+                                'Air Pressure',
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign
+                                    .center, // This will center align the text
+                                maxLines:
+                                    2, // This will limit the text to two lines
+                                overflow: TextOverflow
+                                    .ellipsis, // This will add ellipsis if the text overflows
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      title: Text('${dashboardData[i].feelLikeTemperature}'),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Real Temperature',
-                        style: TextStyle(fontSize: 18),
+                  // 你可以按照上面的模式添加更多的卡片
+
+                  Expanded(
+                    flex: 1,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '${dashboardData[i].feelLikeTemperature}',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(
+                                'Feel-like Temperature',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      title: Text('${dashboardData[i].realTemperature}'),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Humidity',
-                        style: TextStyle(fontSize: 18),
+                  // 你可以按照上面的模式添加更多的卡片
+
+                  Expanded(
+                    flex: 1,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '${dashboardData[i].humidity}',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(
+                                'Humidity',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      title: Text('${dashboardData[i].humidity}'),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Air Pressure',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${dashboardData[i].airPressure}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Water Level',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${dashboardData[i].waterLevel}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Total Water',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text('${dashboardData[i].totalWater}'),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: const Text(
-                        'Time',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      title: Text(dashboardData[i].time),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                  // 你可以按照上面的模式添加更多的卡片
+
+                  // Repeat the same pattern for the remaining cards...
+                ],
+              ),
+            ]),
           );
         }
       });
