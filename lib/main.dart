@@ -5,6 +5,23 @@ import 'package:flutter_water/models/settings_provider.dart';
 import 'package:flutter_water/providers/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 
+Widget buildSettingCard(
+    String label, TextEditingController userIdController, Icon icon) {
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0), // Adjust the padding here
+      child: TextFormField(
+        controller: userIdController,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+          prefixIcon: icon,
+        ),
+      ),
+    ),
+  );
+}
+
 Widget buildCard(double value, String label) {
   return SizedBox(
     width: 150, // Set the width of the card
@@ -201,8 +218,8 @@ class SettingsView extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [Colors.purple, Colors.cyan],
