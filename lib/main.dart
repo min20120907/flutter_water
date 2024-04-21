@@ -22,6 +22,99 @@ Widget buildSettingCard(
   );
 }
 
+class LoginView extends StatefulWidget {
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Widget buildCard(String text, String label) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        Expanded(
+          child: TextField(
+            controller:
+                text == 'Username' ? _usernameController : _passwordController,
+            obscureText: text == 'Password',
+            decoration: InputDecoration(
+              hintText: text,
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFF8EBFF),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/logo.jpg',
+              height: 100,
+            ),
+            SizedBox(height: 24),
+            buildCard('Username', ''),
+            SizedBox(height: 16),
+            buildCard('Password', ''),
+            SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                // Handle forgot password action
+              },
+              child: Text(
+                'Forgot Password',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // Handle sign up action
+              },
+              style: ElevatedButton.styleFrom(
+                primary:
+                    Colors.transparent, // Makes button background transparent
+                shadowColor: Colors.transparent, // Removes shadow from button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Sign Up',
+                  style:
+                      TextStyle(color: Colors.blue)), // Adjust text color here
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 Widget buildCard(double value, String label) {
   return SizedBox(
     width: 150, // Set the width of the card
@@ -167,6 +260,8 @@ class Dashboard extends StatelessWidget {
                 break;
               case 2:
                 // 導航到Notifications頁面
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginView()));
                 break;
               case 3:
                 // 導航到Settings頁面
