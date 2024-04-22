@@ -22,6 +22,138 @@ Widget buildSettingCard(
   );
 }
 
+class SignUpView extends StatefulWidget {
+  @override
+  _SignUpViewState createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  bool _agreeToTerms = false;
+  bool _subscribeToNewsletter = false;
+
+  Widget buildCard(String text, String hint) {
+    return TextField(
+      controller: getController(text),
+      obscureText: text == 'Password' || text == 'Confirm Password',
+      decoration: InputDecoration(
+        labelText: text,
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  TextEditingController getController(String text) {
+    switch (text) {
+      case 'Username':
+        return _usernameController;
+      case 'Email':
+        return _emailController;
+      case 'Password':
+        return _passwordController;
+      case 'Confirm Password':
+        return _confirmPasswordController;
+      default:
+        throw Exception('Invalid field');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.purple, Colors.cyan],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/logo.jpg',
+              height: 100,
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            buildCard('Username', 'Choose a username'),
+            SizedBox(
+              height: 16,
+            ),
+            buildCard('Email', 'Enter your Email'),
+            SizedBox(
+              height: 16,
+            ),
+            buildCard('Password', 'Choose a password'),
+            SizedBox(
+              height: 16,
+            ),
+            buildCard('Confirm Password', 'Confirm your password'),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: _agreeToTerms,
+                  onChanged: (value) {
+                    setState(() {
+                      _agreeToTerms = value!;
+                    });
+                  },
+                ),
+                Text('Agree to terms and conditions'),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: _subscribeToNewsletter,
+                  onChanged: (value) {
+                    setState(() {
+                      _subscribeToNewsletter = value!;
+                    });
+                  },
+                ),
+                Text('Subscribe to newsletter'),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Handle sign up action
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue, // Change button background to blue
+                shadowColor: Colors.transparent, // Removes shadow from button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Sign Up',
+                  style: TextStyle(
+                      color: Colors.white)), // Change text color to white
+            ),
+          ],
+        ),
+      ),
+    ));
+  }
+}
+
 class LoginView extends StatefulWidget {
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -64,8 +196,15 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8EBFF),
-      body: Padding(
+        body: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.purple, Colors.cyan],
+        ),
+      ),
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -86,9 +225,13 @@ class _LoginViewState extends State<LoginView> {
               child: Text(
                 'Forgot Password',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.white,
                   decoration: TextDecoration.underline,
                 ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    Colors.blue, // Change button background to blue
               ),
             ),
             SizedBox(height: 16),
@@ -97,21 +240,38 @@ class _LoginViewState extends State<LoginView> {
                 // Handle sign up action
               },
               style: ElevatedButton.styleFrom(
-                primary:
-                    Colors.transparent, // Makes button background transparent
+                primary: Colors.blue, // Change button background to blue
                 shadowColor: Colors.transparent, // Removes shadow from button
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
               child: Text('Sign Up',
-                  style:
-                      TextStyle(color: Colors.blue)), // Adjust text color here
+                  style: TextStyle(
+                      color: Colors.white)), // Change text color to white
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Handle sign in action
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue, // Change button background to blue
+                shadowColor: Colors.transparent, // Removes shadow from button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Sign In',
+                  style: TextStyle(
+                      color: Colors.white)), // Change text color to white
             ),
           ],
         ),
       ),
-    );
+    ));
   }
 }
 
