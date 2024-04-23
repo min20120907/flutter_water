@@ -238,6 +238,11 @@ class _LoginViewState extends State<LoginView> {
             ElevatedButton(
               onPressed: () {
                 // Handle sign up action
+                // Go to the signup page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpView()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue, // Change button background to blue
@@ -420,8 +425,6 @@ class Dashboard extends StatelessWidget {
                 break;
               case 2:
                 // 導航到Notifications頁面
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginView()));
                 break;
               case 3:
                 // 導航到Settings頁面
@@ -577,7 +580,33 @@ class SettingsView extends StatelessWidget {
                               ),
                             );
                           },
-                        )
+                        ),
+                        const SizedBox(height: 20),
+                        // Sign in button
+                        ElevatedButton(
+                          onPressed: () {
+                            // Handle sign in action
+                            // Go to the login page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginView()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary:
+                                Colors.blue, // Change button background to blue
+                            shadowColor: Colors
+                                .transparent, // Removes shadow from button
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text('Sign In',
+                              style: TextStyle(
+                                  color: Colors
+                                      .white)), // Change text color to white
+                        ),
                       ],
                     ),
                   ),
