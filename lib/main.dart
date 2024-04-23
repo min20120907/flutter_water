@@ -312,7 +312,11 @@ class _LoginViewState extends State<LoginView> {
           child: IconButton(
             icon: Icon(Icons.close, color: Colors.white),
             onPressed: () {
-              Navigator.pop(context);
+              // go to settings page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsView()),
+              );
             },
           ),
         ),
