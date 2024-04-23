@@ -195,85 +195,52 @@ class _NotificationsViewState extends State<NotificationsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Notifications'),
-          automaticallyImplyLeading: false,
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.purple, Colors.cyan],
-            ),
+      appBar: AppBar(
+        title: Text('Notifications'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.clear_all),
+            onPressed: () {
+              setState(() {
+                notifications.clear();
+              });
+            },
           ),
-          child: ListView.builder(
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              return Card(
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.purple, Colors.cyan],
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: notifications.length,
+          itemBuilder: (context, index) {
+            return Dismissible(
+              key: Key(notifications[index]),
+              onDismissed: (direction) {
+                setState(() {
+                  notifications.removeAt(index);
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Notification Removed!')),
+                );
+              },
+              background: Container(color: Colors.red),
+              child: Card(
                 margin: EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(notifications[index]),
                 ),
-              );
-            },
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard),
-              label: 'Dashboard',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          unselectedItemColor:
-              Color.fromARGB(255, 123, 159, 173), // Set unselected item color
-          selectedItemColor: Colors.purple, // Set selected item color
-          // 選擇的項目索引
-          currentIndex: 2,
-          // 點擊項目時的回調
-          onTap: (index) {
-            // 根據索引執行相應的操作，例如導航到不同的頁面
-            switch (index) {
-              case 0:
-                // 導航到Home頁面
-
-                break;
-              case 1:
-                // 導航到Dashboard頁面
-                Navigator.push(
-                  // push the settings page
-                  context,
-                  MaterialPageRoute(builder: (context) => Dashboard()),
-                );
-                break;
-              case 2:
-                // 導航到Notifications頁面
-                break;
-              case 3:
-                // 導航到Settings頁面
-                // refresh the page and update index2
-                Navigator.push(
-                  // push the settings page
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsView()),
-                );
-                break;
-            }
+              ),
+            );
           },
-        ));
+        ),
+      ),
+    );
   }
 }
 
