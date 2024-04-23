@@ -147,6 +147,31 @@ class _SignUpViewState extends State<SignUpView> {
                   style: TextStyle(
                       color: Colors.white)), // Change text color to white
             ),
+            SizedBox(
+              height: 16,
+            ),
+            // add a cancel button on the left of sign up
+            TextButton(
+              onPressed: () {
+                // Handle cancel action
+                // Go to the login page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginView()),
+                );
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    Colors.blue, // Change button background to blue
+              ),
+            ),
           ],
         ),
       ),
@@ -196,86 +221,102 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.purple, Colors.cyan],
+        body: Stack(
+      children: <Widget>[
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.purple, Colors.cyan],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/logo.jpg',
+                  height: 100,
+                ),
+                SizedBox(height: 24),
+                buildCard('Username', ''),
+                SizedBox(height: 16),
+                buildCard('Password', ''),
+                SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    // Handle forgot password action
+                  },
+                  child: Text(
+                    'Forgot Password',
+                    style: TextStyle(
+                      color: Colors.white,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    backgroundColor:
+                        Colors.blue, // Change button background to blue
+                  ),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle sign up action
+                    // Go to the signup page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpView()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // Change button background to blue
+                    shadowColor:
+                        Colors.transparent, // Removes shadow from button
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text('Sign Up',
+                      style: TextStyle(
+                          color: Colors.white)), // Change text color to white
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle sign in action
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // Change button background to blue
+                    shadowColor:
+                        Colors.transparent, // Removes shadow from button
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text('Sign In',
+                      style: TextStyle(
+                          color: Colors.white)), // Change text color to white
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/logo.jpg',
-              height: 100,
-            ),
-            SizedBox(height: 24),
-            buildCard('Username', ''),
-            SizedBox(height: 16),
-            buildCard('Password', ''),
-            SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                // Handle forgot password action
-              },
-              child: Text(
-                'Forgot Password',
-                style: TextStyle(
-                  color: Colors.white,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor:
-                    Colors.blue, // Change button background to blue
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Handle sign up action
-                // Go to the signup page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpView()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Change button background to blue
-                shadowColor: Colors.transparent, // Removes shadow from button
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text('Sign Up',
-                  style: TextStyle(
-                      color: Colors.white)), // Change text color to white
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Handle sign in action
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Change button background to blue
-                shadowColor: Colors.transparent, // Removes shadow from button
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text('Sign In',
-                  style: TextStyle(
-                      color: Colors.white)), // Change text color to white
-            ),
-          ],
+        Positioned(
+          top: 40.0,
+          right: 10.0,
+          child: IconButton(
+            icon: Icon(Icons.close, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
-      ),
+      ],
     ));
   }
 }
