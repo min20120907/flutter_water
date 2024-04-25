@@ -4,6 +4,38 @@ import 'package:flutter_water/models/settings_data.dart';
 import 'package:flutter_water/models/settings_provider.dart';
 import 'package:flutter_water/providers/dashboard_provider.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+Future<void> registerUser(String username, String password, String email,
+    BuildContext context) async {
+  final response = await http.post(
+    Uri.parse('http://163.13.127.50:5000/register'),
+    body: {'username': username, 'password': password, 'email': email},
+  );
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    String status = jsonResponse['status'];
+    String message = jsonResponse['message'];
+
+    if (status == 'success') {
+      final snackBar = SnackBar(content: Text('Registration Succeed!'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginView()),
+      );
+    } else {
+      final snackBar = SnackBar(content: Text(message));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  } else {
+    final snackBar =
+        SnackBar(content: Text('Registration Failed, please try again later'));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+}
 
 Widget buildSettingCard(
     String label, TextEditingController userIdController, Icon icon) {
@@ -135,6 +167,61 @@ class _SignUpViewState extends State<SignUpView> {
             ElevatedButton(
               onPressed: () {
                 // Handle sign up action
+                // check if the agree to terms checkbox is checked
+                if (!_agreeToTerms) {
+                  // show a snackbar with a message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Please agree to the terms and conditions'),
+                    ),
+                  );
+                  return;
+                }
+                // check if the password and confirm password match
+                if (_passwordController.text !=
+                    _confirmPasswordController.text) {
+                  // show a snackbar with a message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Passwords do not match'),
+                    ),
+                  );
+                  return;
+                }
+                // check if the email is valid
+                if (!_emailController.text.contains('@')) {
+                  // show a snackbar with a message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Invalid email address'),
+                    ),
+                  );
+                  return;
+                }
+                // check if the username is valid
+                if (_usernameController.text.isEmpty) {
+                  // show a snackbar with a message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Username cannot be empty'),
+                    ),
+                  );
+                  return;
+                }
+                // check if the password is valid
+                if (_passwordController.text.isEmpty) {
+                  // show a snackbar with a message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Password cannot be empty'),
+                    ),
+                  );
+                  return;
+                }
+                // submit the form to the server by GET
+                // format: http://163.13.127.50:5000/register?username=tengsnake&password=1234
+                registerUser(_usernameController.text, _passwordController.text,
+                    _emailController.text, context);
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue, // Change button background to blue
