@@ -27,34 +27,31 @@ class DashboardProvider with ChangeNotifier {
   }
 
   Future<List<DashboardData>> fetchDashboardData() async {
-    // final response =
-    //    await http.get(Uri.parse('http://localhost:5000/dashboard'));
-    // use fake response to test the UI
-    final response = http.Response(
-        '[{"waterFlowSpeed": 0.0, "airPressure": 0.0, "feelLikeTemperature": 0.0, "realTemperature": 0.0, "humidity": 0.0, "waterLevel": 0.0, "totalWater": 0.0, "time": "00:00:00"}]',
-        200);
-    // Initialize the default value of the dashboard data
-    _dashboardData = [
-      DashboardData(
-          waterFlowSpeed: 0,
-          airPressure: 0,
-          feelLikeTemperature: 0,
-          realTemperature: 0,
-          humidity: 0,
-          waterLevel: 0,
-          totalWater: 0,
-          time: '00:00:00')
-    ];
-    final responseData = json.decode(response.body);
+    final response = await http.post(
+      Uri.parse('http://163.13.127.50:5001/read_all_data_from_db'),
+      headers: <String, String>{"Content-Type": "application/json"},
+      body: json.encode(<String, String>{'username': 'min20120907'}),
+    );
+    print(response.statusCode);
+    print(response.body);
+    // Check if the response body is empty
+    if (response.body.isEmpty) {
+      return [];
+    }
+    final responseData = json.decode(response.body)['result'];
     _dashboardData = (responseData as List)
         .map((item) => DashboardData(
-            waterFlowSpeed: item['waterFlowSpeed'],
+            sensorId: item['sensor_id'],
+            waterFlowSpeed: item['water_Flow_Speed'],
             airPressure: item['airPressure'],
-            feelLikeTemperature: item['feelLikeTemperature'],
-            realTemperature: item['realTemperature'],
+            feelLikeTemperature: item['apparentTemp'],
+            realTemperature: item['realTemp'],
             humidity: item['humidity'],
             waterLevel: item['waterLevel'],
-            totalWater: item['totalWater'],
+            totalWater: item['totalwater'],
+            ultravioletIntensity: item['Ultraviolet_intensity'],
+            luminousIntensity: item['LuminousIntensity'],
+            altitude: item['Altitude'],
             time: item['time']))
         .toList();
     notifyListeners();

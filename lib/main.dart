@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'models/dashboard_data.dart';
+
 Future<void> registerUser(String username, String password, String email,
     BuildContext context) async {
   final response = await http.post(
@@ -535,7 +537,7 @@ class DashboardApp extends StatelessWidget {
 
 FutureBuilder dashboard(BuildContext context) {
   return FutureBuilder(
-      future: Provider.of<DashboardProvider>(context, listen: true)
+      future: Provider.of<DashboardProvider>(context, listen: false)
           .fetchDashboardData(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -544,26 +546,55 @@ FutureBuilder dashboard(BuildContext context) {
           // Handle error
           return Text('Error: ${snapshot.error}'); // Display the error code
         } else {
-          final dashboardData = snapshot.data;
+          final dashboardData = snapshot.data as List<DashboardData>;
           // initialize dashboardData with default value
-          if (dashboardData == null) {
+          if (dashboardData.isEmpty) {
             return const Center(child: Text('No data'));
           }
+          // Group the data by sensor_id
+          Map<String, List<DashboardData>> groupedData = {};
+          for (var data in dashboardData) {
+            if (!groupedData.containsKey(data.sensorId)) {
+              groupedData[data.sensorId] = [];
+            }
+            groupedData[data.sensorId]!.add(data);
+          }
           return ListView.builder(
-            itemCount: dashboardData.length,
-            itemBuilder: (ctx, i) => Wrap(
-              spacing: 8.0, // Horizontal spacing between cards
-              runSpacing: 8.0, // Vertical spacing between cards
-              children: [
-                buildCard(dashboardData[i].realTemperature, 'Real Temperature'),
-                buildCard(dashboardData[i].waterFlowSpeed, 'Water Flow Speed'),
-                buildCard(dashboardData[i].airPressure, 'Air Pressure'),
-                buildCard(dashboardData[i].feelLikeTemperature,
-                    'Feel-like Temperature'),
-                buildCard(dashboardData[i].humidity, 'Humidity'),
-                // Add more cards as needed
-              ],
-            ),
+            itemCount: groupedData.keys.length,
+            itemBuilder: (ctx, i) {
+              String sensorId = groupedData.keys.elementAt(i);
+              return Card(
+                child: Column(
+                  children: [
+                    Text('Sensor ID: $sensorId'),
+                    ...groupedData[sensorId]!
+                        .map((data) => Wrap(
+                              spacing: 8.0, // Horizontal spacing between cards
+                              runSpacing: 8.0, // Vertical spacing between cards
+                              children: [
+                                buildCard(
+                                    data.realTemperature, 'Real Temperature'),
+                                buildCard(
+                                    data.waterFlowSpeed, 'Water Flow Speed'),
+                                buildCard(data.airPressure, 'Air Pressure'),
+                                buildCard(data.feelLikeTemperature,
+                                    'Feel-like Temperature'),
+                                buildCard(data.humidity, 'Humidity'),
+                                buildCard(data.waterLevel, 'Water Level'),
+                                buildCard(data.totalWater, 'Total Water'),
+                                buildCard(data.ultravioletIntensity,
+                                    'Ultraviolet Intensity'),
+                                buildCard(data.luminousIntensity,
+                                    'Luminous Intensity'),
+                                buildCard(data.altitude, 'Altitude'),
+                                // Add more cards as needed
+                              ],
+                            ))
+                        .toList(),
+                  ],
+                ),
+              );
+            },
           );
         }
       });
