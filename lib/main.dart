@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_water/models/settings_data.dart';
@@ -536,6 +538,11 @@ class DashboardApp extends StatelessWidget {
 }
 
 FutureBuilder dashboard(BuildContext context) {
+  Timer.periodic(
+      Duration(seconds: 2),
+      (Timer t) => Provider.of<DashboardProvider>(context, listen: false)
+          .fetchDashboardData());
+
   return FutureBuilder(
       future: Provider.of<DashboardProvider>(context, listen: false)
           .fetchDashboardData(),
@@ -559,42 +566,51 @@ FutureBuilder dashboard(BuildContext context) {
             }
             groupedData[data.sensorId]!.add(data);
           }
-          return ListView.builder(
-            itemCount: groupedData.keys.length,
-            itemBuilder: (ctx, i) {
-              String sensorId = groupedData.keys.elementAt(i);
-              return Card(
-                child: Column(
-                  children: [
-                    Text('Sensor ID: $sensorId'),
-                    ...groupedData[sensorId]!
-                        .map((data) => Wrap(
-                              spacing: 8.0, // Horizontal spacing between cards
-                              runSpacing: 8.0, // Vertical spacing between cards
-                              children: [
-                                buildCard(
-                                    data.realTemperature, 'Real Temperature'),
-                                buildCard(
-                                    data.waterFlowSpeed, 'Water Flow Speed'),
-                                buildCard(data.airPressure, 'Air Pressure'),
-                                buildCard(data.feelLikeTemperature,
-                                    'Feel-like Temperature'),
-                                buildCard(data.humidity, 'Humidity'),
-                                buildCard(data.waterLevel, 'Water Level'),
-                                buildCard(data.totalWater, 'Total Water'),
-                                buildCard(data.ultravioletIntensity,
-                                    'Ultraviolet Intensity'),
-                                buildCard(data.luminousIntensity,
-                                    'Luminous Intensity'),
-                                buildCard(data.altitude, 'Altitude'),
-                                // Add more cards as needed
-                              ],
-                            ))
-                        .toList(),
-                  ],
-                ),
-              );
+          return RefreshIndicator(
+            onRefresh: () async {
+              await Provider.of<DashboardProvider>(context, listen: false)
+                  .fetchDashboardData();
             },
+            child: ListView.builder(
+              itemCount: groupedData.keys.length,
+              itemBuilder: (ctx, i) {
+                String sensorId = groupedData.keys.elementAt(i);
+                return Card(
+                  color: Colors.white.withOpacity(0.5),
+                  child: Column(
+                    children: [
+                      Text('Sensor ID: $sensorId'),
+                      ...groupedData[sensorId]!
+                          .map((data) => Wrap(
+                                spacing:
+                                    8.0, // Horizontal spacing between cards
+                                runSpacing:
+                                    8.0, // Vertical spacing between cards
+                                children: [
+                                  buildCard(
+                                      data.realTemperature, 'Real Temperature'),
+                                  buildCard(
+                                      data.waterFlowSpeed, 'Water Flow Speed'),
+                                  buildCard(data.airPressure, 'Air Pressure'),
+                                  buildCard(data.feelLikeTemperature,
+                                      'Feel-like Temperature'),
+                                  buildCard(data.humidity, 'Humidity'),
+                                  buildCard(data.waterLevel, 'Water Level'),
+                                  buildCard(data.totalWater, 'Total Water'),
+                                  buildCard(data.ultravioletIntensity,
+                                      'Ultraviolet Intensity'),
+                                  buildCard(data.luminousIntensity,
+                                      'Luminous Intensity'),
+                                  buildCard(data.altitude, 'Altitude'),
+                                  // Add more cards as needed
+                                ],
+                              ))
+                          .toList(),
+                    ],
+                  ),
+                );
+              },
+            ),
           );
         }
       });
