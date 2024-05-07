@@ -6,24 +6,9 @@ import 'package:flutter_water/models/settings_data.dart';
 
 class DashboardProvider with ChangeNotifier {
   List<DashboardData> _dashboardData = [];
-  late SettingsData _settingsData = SettingsData(
-    userId: 'abc123',
-    unitSettings: 'Celcius',
-    updateTime: '26-03-2024',
-    updateInterval: '1',
-    flowControlStatus: 0,
-  );
 
   List<DashboardData> get dashboardData {
     return [..._dashboardData];
-  }
-
-  SettingsData get settingsData {
-    // ignore: unnecessary_null_comparison
-    if (_settingsData == null) {
-      fetchSettingsData();
-    }
-    return _settingsData;
   }
 
   Future<List<DashboardData>> fetchDashboardData() async {
@@ -32,8 +17,8 @@ class DashboardProvider with ChangeNotifier {
       headers: <String, String>{"Content-Type": "application/json"},
       body: json.encode(<String, String>{'username': 'min20120907'}),
     );
-    print(response.statusCode);
-    print(response.body);
+    // print(response.statusCode);
+    // print(response.body);
     // Check if the response body is empty
     if (response.body.isEmpty) {
       return [];
@@ -56,23 +41,5 @@ class DashboardProvider with ChangeNotifier {
         .toList();
     notifyListeners();
     return _dashboardData;
-  }
-
-  Future<void> fetchSettingsData() async {
-    // final response =
-    //     await http.get(Uri.parse('http://localhost:5000/settings'));
-    // use fake response to test the UI
-    final response = http.Response(
-        '[{"waterFlowSpeed": 0.0, "airPressure": 0.0, "feelLikeTemperature": 0.0, "realTemperature": 0.0, "humidity": 0.0, "waterLevel": 0.0, "totalWater": 0.0, "time": "00:00:00"}]',
-        200);
-    final responseData = json.decode(response.body);
-    _settingsData = SettingsData(
-      unitSettings: responseData['unitSettings'],
-      updateTime: responseData['updateTime'],
-      updateInterval: responseData['updateInterval'],
-      flowControlStatus: responseData['flowControlStatus'],
-      userId: responseData['userID'],
-    );
-    notifyListeners();
   }
 }

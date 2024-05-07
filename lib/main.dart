@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_water/models/settings_data.dart';
@@ -513,6 +514,11 @@ Widget buildCard(double value, String label) {
 }
 
 void main() {
+  // Initialize FFI
+  sqfliteFfiInit();
+
+  // Use sqflite_common_ffi in your whole app
+  databaseFactory = databaseFactoryFfi;
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (ctx) => DashboardProvider()),
@@ -703,7 +709,7 @@ class SettingsView extends StatelessWidget {
     DashboardProvider dashboardProvider =
         Provider.of<DashboardProvider>(context, listen: false);
     //get settings data from the dashboard provider, if available
-    settingsData = dashboardProvider.settingsData;
+    settingsData = settingsProvider.settingsData;
 
     TextEditingController userIdController =
         TextEditingController(text: settingsData.userId);
